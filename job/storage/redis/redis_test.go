@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ajvb/kala/job"
+	"github.com/crea-asia/kala/job"
 	"github.com/rafaeljusto/redigomock"
 	"github.com/stretchr/testify/assert"
 )

@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ajvb/kala/utils/iso8601"
+	"github.com/crea-asia/kala/utils/iso8601"
 	"github.com/mixer/clock"
 
 	uuid "github.com/nu7hatch/gouuid"

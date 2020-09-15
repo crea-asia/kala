@@ -18,8 +18,8 @@ github.com/DATA-DOG/go-sqlmock v1.3.0 h1:ljjRxlddjfChBJdFKJs5LuCwCWPLaC1UZLwAo3P
 github.com/DATA-DOG/go-sqlmock v1.3.0/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/DataDog/datadog-go v3.2.0+incompatible/go.mod h1:LButxg5PwREeZtORoXG3tL4fMGNddJ+vMq1mwgfaqoQ=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
-github.com/ajvb/kala v0.8.4 h1:KfbsBOhA+Q3y6xjtKCgbiNUDDHJag0wh7DVGZywf+ss=
-github.com/ajvb/kala v0.8.4/go.mod h1:cBpDC4GBNXo0XPk7fDlw1ncAXeVJ/fZlPLqE5XfLM7A=
+github.com/crea-asia/kala v0.8.4 h1:KfbsBOhA+Q3y6xjtKCgbiNUDDHJag0wh7DVGZywf+ss=
+github.com/crea-asia/kala v0.8.4/go.mod h1:cBpDC4GBNXo0XPk7fDlw1ncAXeVJ/fZlPLqE5XfLM7A=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=

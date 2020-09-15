@@ -9,7 +9,7 @@ import (
 
 	"github.com/DATA-DOG/go-sqlmock"
 
-	"github.com/ajvb/kala/job"
+	"github.com/crea-asia/kala/job"
 
 	"github.com/stretchr/testify/assert"
 )

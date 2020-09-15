@@ -4,8 +4,8 @@ go 1.14
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.3.0
-	github.com/ajvb/kala v0.8.4
-	github.com/antihax/optional v1.0.0 // indirect
+	github.com/crea-asia/kala v0.8.4
+	github.com/antihax/optional v1.0.0
 	github.com/boltdb/bolt v1.3.1-0.20170131192018-e9cf4fae01b5
 	github.com/cornelk/hashmap v1.0.1
 	github.com/garyburd/redigo v1.0.1-0.20170208211623-48545177e92a
