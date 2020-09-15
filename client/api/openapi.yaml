@@ -1,0 +1,236 @@
+openapi: 3.0.1
+info:
+  license:
+    name: MIT
+  title: Kala scheduler
+  version: "1.0"
+servers:
+- url: http://localhost:8000/
+paths:
+  /api/v1/job/:
+    post:
+      operationId: createJob
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobWithId'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+          description: An error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+          description: An error
+      summary: Creates a job
+      x-codegen-request-body-name: createJob
+  /api/v1/job/{jobId}/:
+    delete:
+      operationId: deleteJob
+      parameters:
+      - in: path
+        name: jobId
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          content: {}
+          description: OK
+        "404":
+          content: {}
+          description: Not found
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+          description: An error
+      summary: Deletes a job
+    get:
+      operationId: getJob
+      parameters:
+      - in: path
+        name: jobId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+          description: An error
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+          description: An error
+      summary: Get job details
+components:
+  responses:
+    errorResponse:
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                type: string
+            type: object
+      description: An error
+  schemas:
+    JobWithId:
+      example:
+        id: id
+      properties:
+        id:
+          type: string
+      type: object
+    RemoteProperties:
+      example:
+        headers:
+          key:
+          - headers
+          - headers
+        method: method
+        body: body
+        url: url
+        timeout: 1
+        expected_response_codes:
+        - 5
+        - 5
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+        body:
+          type: string
+        headers:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+        timeout:
+          format: int64
+          type: integer
+        expected_response_codes:
+          items:
+            format: int64
+            type: integer
+          type: array
+      type: object
+    Job:
+      example:
+        owner: owner
+        epsilon: epsilon
+        schedule: schedule
+        retries: 6
+        is_done: true
+        next_run_at: next_run_at
+        remote_properties:
+          headers:
+            key:
+            - headers
+            - headers
+          method: method
+          body: body
+          url: url
+          timeout: 1
+          expected_response_codes:
+          - 5
+          - 5
+        name: name
+        disabled: true
+        id: id
+        type: 0
+        command: command
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          description: 0 - local, 1 - remote
+          enum:
+          - 0
+          - 1
+          format: int64
+          type: integer
+        command:
+          type: string
+        owner:
+          type: string
+        disabled:
+          type: boolean
+        schedule:
+          type: string
+        retries:
+          format: int64
+          type: integer
+        epsilon:
+          type: string
+        next_run_at:
+          type: string
+        remote_properties:
+          $ref: '#/components/schemas/RemoteProperties'
+        is_done:
+          type: boolean
+      type: object
+    inline_response_400:
+      properties:
+        error:
+          type: string
+      type: object
+    inline_response_200:
+      example:
+        job:
+          owner: owner
+          epsilon: epsilon
+          schedule: schedule
+          retries: 6
+          is_done: true
+          next_run_at: next_run_at
+          remote_properties:
+            headers:
+              key:
+              - headers
+              - headers
+            method: method
+            body: body
+            url: url
+            timeout: 1
+            expected_response_codes:
+            - 5
+            - 5
+          name: name
+          disabled: true
+          id: id
+          type: 0
+          command: command
+      properties:
+        job:
+          $ref: '#/components/schemas/Job'
+      type: object

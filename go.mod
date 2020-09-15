@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.3.0
+	github.com/antihax/optional v1.0.0 // indirect
 	github.com/armon/go-metrics v0.3.3 // indirect
 	github.com/boltdb/bolt v1.3.1-0.20170131192018-e9cf4fae01b5
 	github.com/cornelk/hashmap v1.0.1

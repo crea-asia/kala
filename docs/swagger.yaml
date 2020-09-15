@@ -1,0 +1,141 @@
+swagger: "2.0"
+
+info:
+  version: "1.0"
+  title: Kala scheduler
+  license:
+    name: MIT
+
+schemes:
+  - http
+
+host: localhost:8000
+
+produces:
+  - application/json
+
+consumes:
+  - application/json
+
+paths:
+  /api/v1/job/:
+    post:
+      summary: Creates a job
+      operationId: createJob
+      parameters:
+        - in: body
+          name: createJob
+          schema:
+            $ref: '#/definitions/Job'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/JobWithId'
+        400:
+          $ref: '#/responses/errorResponse'
+        default:
+          $ref: '#/responses/errorResponse'
+
+  /api/v1/job/{jobId}/:
+    parameters:
+      - in: path
+        name: jobId
+        type: string
+        required: true
+    get:
+      summary: Get job details
+      operationId: getJob
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              job:
+                $ref: '#/definitions/Job'
+        400:
+          $ref: '#/responses/errorResponse'
+        default:
+          $ref: '#/responses/errorResponse'
+    delete:
+      summary: Deletes a job
+      operationId: deleteJob
+      responses:
+        204:
+          description: OK
+        404:
+          description: Not found
+        default:
+          $ref: '#/responses/errorResponse'
+
+responses:
+  errorResponse:
+    description: An error
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+
+definitions:
+  JobWithId:
+    type: object
+    properties:
+      id:
+        type: string
+
+  RemoteProperties:
+    type: object
+    properties:
+      url:
+        type: string
+      method:
+        type: string
+      body:
+        type: string
+      headers:
+        type: object
+        additionalProperties:
+          type: array
+          items:
+            type: string
+      timeout:
+        type: integer
+        format: int64
+      expected_response_codes:
+        type: array
+        items:
+          type: integer
+          format: int64
+  Job:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      type:
+        description: 0 - local, 1 - remote
+        type: integer
+        format: int64
+        enum: [ 0, 1 ]
+      command:
+        type: string
+      owner:
+        type: string
+      disabled:
+        type: boolean
+      schedule:
+        type: string
+      retries:
+        type: integer
+        format: int64
+      epsilon:
+        type: string
+      next_run_at:
+        type: string
+      remote_properties:
+        $ref: '#/definitions/RemoteProperties'
+      is_done:
+        type: boolean
