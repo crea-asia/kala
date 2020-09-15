@@ -1,6 +1,6 @@
-module github.com/ajvb/kala
+module github.com/crea-asia/kala
 
-go 1.13
+go 1.14
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.3.0
