@@ -203,7 +203,6 @@ components:
       properties:
         error:
           type: string
-      type: object
     inline_response_200:
       example:
         job:
@@ -233,4 +232,3 @@ components:
       properties:
         job:
           $ref: '#/components/schemas/Job'
-      type: object

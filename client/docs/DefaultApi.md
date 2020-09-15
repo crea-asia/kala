@@ -12,49 +12,26 @@ Method | HTTP request | Description
 
 ## CreateJob
 
-> JobWithId CreateJob(ctx).CreateJob(createJob).Execute()
+> JobWithId CreateJob(ctx, optional)
 
 Creates a job
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    createJob := openapiclient.Job{Id: "Id_example", Name: "Name_example", Type: int64(123), Command: "Command_example", Owner: "Owner_example", Disabled: false, Schedule: "Schedule_example", Retries: int64(123), Epsilon: "Epsilon_example", NextRunAt: "NextRunAt_example", RemoteProperties: openapiclient.RemoteProperties{Url: "Url_example", Method: "Method_example", Body: "Body_example", Headers: map[string]string{ "Key" = "Value" }, Timeout: int64(123), ExpectedResponseCodes: []int64{int64(123))}, IsDone: false} // Job |  (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.DefaultApi.CreateJob(context.Background(), ).CreateJob(createJob).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `DefaultApi.CreateJob``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `CreateJob`: JobWithId
-    fmt.Fprintf(os.Stdout, "Response from `DefaultApi.CreateJob`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiCreateJobRequest struct via the builder pattern
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **createJob** | [**Job**](Job.md) |  | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***CreateJobOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a CreateJobOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **createJob** | [**optional.Interface of Job**](Job.md)|  | 
 
 ### Return type
 
@@ -76,51 +53,17 @@ No authorization required
 
 ## DeleteJob
 
-> DeleteJob(ctx, jobId).Execute()
+> DeleteJob(ctx, jobId)
 
 Deletes a job
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    jobId := "jobId_example" // string | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.DefaultApi.DeleteJob(context.Background(), jobId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `DefaultApi.DeleteJob``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**jobId** | **string** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDeleteJobRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
+**jobId** | **string**|  | 
 
 ### Return type
 
@@ -142,53 +85,17 @@ No authorization required
 
 ## GetJob
 
-> InlineResponse200 GetJob(ctx, jobId).Execute()
+> InlineResponse200 GetJob(ctx, jobId)
 
 Get job details
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    jobId := "jobId_example" // string | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.DefaultApi.GetJob(context.Background(), jobId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `DefaultApi.GetJob``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetJob`: InlineResponse200
-    fmt.Fprintf(os.Stdout, "Response from `DefaultApi.GetJob`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**jobId** | **string** |  | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetJobRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
+**jobId** | **string**|  | 
 
 ### Return type
 

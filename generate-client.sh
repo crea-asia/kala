@@ -1,6 +1,6 @@
 project_dir=$(cd "$(dirname "$0")" && pwd -P)
 
-openapi_generator=openapitools/openapi-generator-cli:v5.0.0-beta2
+openapi_generator=openapitools/openapi-generator-cli:v4.3.1
 
 echo "Project dir: ${project_dir}"
 

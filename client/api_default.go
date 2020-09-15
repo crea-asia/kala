@@ -15,6 +15,8 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,38 +27,19 @@ var (
 // DefaultApiService DefaultApi service
 type DefaultApiService service
 
-type ApiCreateJobRequest struct {
-	ctx        _context.Context
-	ApiService *DefaultApiService
-	createJob  *Job
-}
-
-func (r ApiCreateJobRequest) CreateJob(createJob Job) ApiCreateJobRequest {
-	r.createJob = &createJob
-	return r
-}
-
-func (r ApiCreateJobRequest) Execute() (JobWithId, *_nethttp.Response, error) {
-	return r.ApiService.CreateJobExecute(r)
+// CreateJobOpts Optional parameters for the method 'CreateJob'
+type CreateJobOpts struct {
+	CreateJob optional.Interface
 }
 
 /*
- * CreateJob Creates a job
+CreateJob Creates a job
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @return ApiCreateJobRequest
- */
-func (a *DefaultApiService) CreateJob(ctx _context.Context) ApiCreateJobRequest {
-	return ApiCreateJobRequest{
-		ApiService: a,
-		ctx:        ctx,
-	}
-}
-
-/*
- * Execute executes the request
- * @return JobWithId
- */
-func (a *DefaultApiService) CreateJobExecute(r ApiCreateJobRequest) (JobWithId, *_nethttp.Response, error) {
+ * @param optional nil or *CreateJobOpts - Optional Parameters:
+ * @param "CreateJob" (optional.Interface of Job) -
+@return JobWithId
+*/
+func (a *DefaultApiService) CreateJob(ctx _context.Context, localVarOptionals *CreateJobOpts) (JobWithId, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -66,13 +49,8 @@ func (a *DefaultApiService) CreateJobExecute(r ApiCreateJobRequest) (JobWithId, 
 		localVarReturnValue  JobWithId
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.CreateJob")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/api/v1/job/"
-
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/api/v1/job/"
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
@@ -95,13 +73,20 @@ func (a *DefaultApiService) CreateJobExecute(r ApiCreateJobRequest) (JobWithId, 
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.createJob
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if localVarOptionals != nil && localVarOptionals.CreateJob.IsSet() {
+		localVarOptionalCreateJob, localVarOptionalCreateJobok := localVarOptionals.CreateJob.Value().(Job)
+		if !localVarOptionalCreateJobok {
+			return localVarReturnValue, nil, reportError("createJob should be Job")
+		}
+		localVarPostBody = &localVarOptionalCreateJob
+	}
+
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -149,34 +134,12 @@ func (a *DefaultApiService) CreateJobExecute(r ApiCreateJobRequest) (JobWithId, 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
-type ApiDeleteJobRequest struct {
-	ctx        _context.Context
-	ApiService *DefaultApiService
-	jobId      string
-}
-
-func (r ApiDeleteJobRequest) Execute() (*_nethttp.Response, error) {
-	return r.ApiService.DeleteJobExecute(r)
-}
-
 /*
- * DeleteJob Deletes a job
+DeleteJob Deletes a job
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param jobId
- * @return ApiDeleteJobRequest
- */
-func (a *DefaultApiService) DeleteJob(ctx _context.Context, jobId string) ApiDeleteJobRequest {
-	return ApiDeleteJobRequest{
-		ApiService: a,
-		ctx:        ctx,
-		jobId:      jobId,
-	}
-}
-
-/*
- * Execute executes the request
- */
-func (a *DefaultApiService) DeleteJobExecute(r ApiDeleteJobRequest) (*_nethttp.Response, error) {
+*/
+func (a *DefaultApiService) DeleteJob(ctx _context.Context, jobId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
@@ -185,13 +148,9 @@ func (a *DefaultApiService) DeleteJobExecute(r ApiDeleteJobRequest) (*_nethttp.R
 		localVarFileBytes    []byte
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.DeleteJob")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/api/v1/job/{jobId}/"
-	localVarPath = strings.Replace(localVarPath, "{"+"jobId"+"}", _neturl.PathEscape(parameterToString(r.jobId, "")), -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/api/v1/job/{jobId}/"
+	localVarPath = strings.Replace(localVarPath, "{"+"jobId"+"}", _neturl.QueryEscape(parameterToString(jobId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -214,12 +173,12 @@ func (a *DefaultApiService) DeleteJobExecute(r ApiDeleteJobRequest) (*_nethttp.R
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -248,35 +207,13 @@ func (a *DefaultApiService) DeleteJobExecute(r ApiDeleteJobRequest) (*_nethttp.R
 	return localVarHTTPResponse, nil
 }
 
-type ApiGetJobRequest struct {
-	ctx        _context.Context
-	ApiService *DefaultApiService
-	jobId      string
-}
-
-func (r ApiGetJobRequest) Execute() (InlineResponse200, *_nethttp.Response, error) {
-	return r.ApiService.GetJobExecute(r)
-}
-
 /*
- * GetJob Get job details
+GetJob Get job details
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param jobId
- * @return ApiGetJobRequest
- */
-func (a *DefaultApiService) GetJob(ctx _context.Context, jobId string) ApiGetJobRequest {
-	return ApiGetJobRequest{
-		ApiService: a,
-		ctx:        ctx,
-		jobId:      jobId,
-	}
-}
-
-/*
- * Execute executes the request
- * @return InlineResponse200
- */
-func (a *DefaultApiService) GetJobExecute(r ApiGetJobRequest) (InlineResponse200, *_nethttp.Response, error) {
+@return InlineResponse200
+*/
+func (a *DefaultApiService) GetJob(ctx _context.Context, jobId string) (InlineResponse200, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -286,13 +223,9 @@ func (a *DefaultApiService) GetJobExecute(r ApiGetJobRequest) (InlineResponse200
 		localVarReturnValue  InlineResponse200
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DefaultApiService.GetJob")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/api/v1/job/{jobId}/"
-	localVarPath = strings.Replace(localVarPath, "{"+"jobId"+"}", _neturl.PathEscape(parameterToString(r.jobId, "")), -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/api/v1/job/{jobId}/"
+	localVarPath = strings.Replace(localVarPath, "{"+"jobId"+"}", _neturl.QueryEscape(parameterToString(jobId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -315,12 +248,12 @@ func (a *DefaultApiService) GetJobExecute(r ApiGetJobRequest) (InlineResponse200
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
