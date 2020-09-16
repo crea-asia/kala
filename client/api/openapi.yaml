@@ -151,11 +151,11 @@ components:
     Job:
       example:
         owner: owner
-        epsilon: epsilon
+        epsilon: 10s
         schedule: schedule
         retries: 6
         is_done: true
-        next_run_at: next_run_at
+        next_run_at: 2000-01-23T04:56:07.000+00:00
         remote_properties:
           headers:
             key:
@@ -197,8 +197,11 @@ components:
           format: int64
           type: integer
         epsilon:
+          description: Duration in which it is safe to retry the Job.
+          example: 10s
           type: string
         next_run_at:
+          format: date-time
           type: string
         remote_properties:
           $ref: '#/components/schemas/RemoteProperties'
@@ -213,11 +216,11 @@ components:
       example:
         job:
           owner: owner
-          epsilon: epsilon
+          epsilon: 10s
           schedule: schedule
           retries: 6
           is_done: true
-          next_run_at: next_run_at
+          next_run_at: 2000-01-23T04:56:07.000+00:00
           remote_properties:
             headers:
               key:

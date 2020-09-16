@@ -12,8 +12,8 @@ Name | Type | Description | Notes
 **Disabled** | **bool** |  | [optional] 
 **Schedule** | **string** |  | [optional] 
 **Retries** | **int64** |  | [optional] 
-**Epsilon** | **string** |  | [optional] 
-**NextRunAt** | **string** |  | [optional] 
+**Epsilon** | **string** | Duration in which it is safe to retry the Job. | [optional] 
+**NextRunAt** | [**time.Time**](time.Time.md) |  | [optional] 
 **RemoteProperties** | [**RemoteProperties**](RemoteProperties.md) |  | [optional] 
 **IsDone** | **bool** |  | [optional] 
 

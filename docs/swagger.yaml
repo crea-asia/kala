@@ -134,9 +134,12 @@ definitions:
         type: integer
         format: int64
       epsilon:
+        description: Duration in which it is safe to retry the Job.
         type: string
+        example: 10s
       next_run_at:
         type: string
+        format: 'date-time'
       remote_properties:
         $ref: '#/definitions/RemoteProperties'
       is_done:

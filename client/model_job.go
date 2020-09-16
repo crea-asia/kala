@@ -9,19 +9,24 @@
 
 package kalaclient
 
+import (
+	"time"
+)
+
 // Job struct for Job
 type Job struct {
 	Id   string `json:"id,omitempty"`
 	Name string `json:"name,omitempty"`
 	// 0 - local, 1 - remote
-	Type             int64            `json:"type,omitempty"`
-	Command          string           `json:"command,omitempty"`
-	Owner            string           `json:"owner,omitempty"`
-	Disabled         bool             `json:"disabled,omitempty"`
-	Schedule         string           `json:"schedule,omitempty"`
-	Retries          int64            `json:"retries,omitempty"`
+	Type     int64  `json:"type,omitempty"`
+	Command  string `json:"command,omitempty"`
+	Owner    string `json:"owner,omitempty"`
+	Disabled bool   `json:"disabled,omitempty"`
+	Schedule string `json:"schedule,omitempty"`
+	Retries  int64  `json:"retries,omitempty"`
+	// Duration in which it is safe to retry the Job.
 	Epsilon          string           `json:"epsilon,omitempty"`
-	NextRunAt        string           `json:"next_run_at,omitempty"`
+	NextRunAt        time.Time        `json:"next_run_at,omitempty"`
 	RemoteProperties RemoteProperties `json:"remote_properties,omitempty"`
 	IsDone           bool             `json:"is_done,omitempty"`
 }
