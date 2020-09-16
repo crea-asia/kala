@@ -143,6 +143,11 @@ func HandleAddJob(cache job.JobCache, defaultOwner string) func(http.ResponseWri
 		if err != nil {
 			errStr := "Error occurred when initializing the job"
 			log.Errorf(errStr+": %s", err)
+
+			if err == job.ErrConflict {
+				errorEncodeJSON(errors.New(errStr), http.StatusConflict, w)
+				return
+			}
 			errorEncodeJSON(errors.New(errStr), http.StatusBadRequest, w)
 			return
 		}
@@ -303,7 +308,8 @@ func errorEncodeJSON(errToEncode error, status int, w http.ResponseWriter) {
 		return
 	}
 	w.Header().Set(contentType, jsonContentType)
-	http.Error(w, string(js), status)
+	_, _ = w.Write(js)
+	w.WriteHeader(status)
 }
 
 // SetupApiRoutes is used within main to initialize all of the routes

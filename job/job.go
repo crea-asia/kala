@@ -23,6 +23,7 @@ var (
 	RFC3339WithoutTimezone = "2006-01-02T15:04:05"
 
 	ErrInvalidJob       = errors.New("Invalid Local Job. Job's must contain a Name and a Command field")
+	ErrConflict         = errors.New("Such job already exists")
 	ErrInvalidRemoteJob = errors.New("Invalid Remote Job. Job's must contain a Name and a url field")
 	ErrInvalidJobType   = errors.New("Invalid Job type. Types supported: 0 for local and 1 for remote")
 )
@@ -206,6 +207,14 @@ func (j *Job) Init(cache JobCache) error {
 			return err
 		}
 		j.Id = u4.String()
+	}
+
+	if _, err := cache.Get(j.Id); err != ErrJobDoesntExist {
+		if err != nil {
+			log.Errorf("Error occurred when getting job by ID, err=%v", err)
+			return err
+		}
+		return ErrConflict
 	}
 
 	// Add Job to the cache.

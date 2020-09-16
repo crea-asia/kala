@@ -4,15 +4,16 @@ go 1.14
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.3.0
-	github.com/crea-asia/kala v0.8.4
 	github.com/antihax/optional v1.0.0
 	github.com/boltdb/bolt v1.3.1-0.20170131192018-e9cf4fae01b5
 	github.com/cornelk/hashmap v1.0.1
 	github.com/garyburd/redigo v1.0.1-0.20170208211623-48545177e92a
 	github.com/go-sql-driver/mysql v1.4.1
+	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/mux v0.0.0-20150808061613-ffb3f683aad4
 	github.com/hashicorp/consul/api v1.1.0
 	github.com/jmoiron/sqlx v1.2.0
+	github.com/lestrrat-go/tcputil v0.0.0-20180223003554-d3c7f98154fb // indirect
 	github.com/lestrrat-go/test-mysqld v0.0.0-20190527004737-6c91be710371
 	github.com/lib/pq v1.0.0
 	github.com/mattn/go-shellwords v1.0.0
