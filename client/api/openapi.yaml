@@ -151,7 +151,7 @@ components:
     Job:
       example:
         owner: owner
-        epsilon: 10s
+        epsilon: PT10S
         schedule: schedule
         retries: 6
         is_done: true
@@ -198,7 +198,7 @@ components:
           type: integer
         epsilon:
           description: Duration in which it is safe to retry the Job.
-          example: 10s
+          example: PT10S
           type: string
         next_run_at:
           format: date-time
@@ -216,7 +216,7 @@ components:
       example:
         job:
           owner: owner
-          epsilon: 10s
+          epsilon: PT10S
           schedule: schedule
           retries: 6
           is_done: true

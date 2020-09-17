@@ -136,7 +136,7 @@ definitions:
       epsilon:
         description: Duration in which it is safe to retry the Job.
         type: string
-        example: 10s
+        example: PT10S
       next_run_at:
         type: string
         format: 'date-time'
