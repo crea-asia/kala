@@ -9,7 +9,7 @@
 
 package kalaclient
 
-// InlineResponse400 struct for InlineResponse400
-type InlineResponse400 struct {
+// InlineResponseDefault struct for InlineResponseDefault
+type InlineResponseDefault struct {
 	Error string `json:"error,omitempty"`
 }

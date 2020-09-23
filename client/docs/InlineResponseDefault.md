@@ -1,4 +1,4 @@
-# InlineResponse400
+# InlineResponseDefault
 
 ## Properties
 

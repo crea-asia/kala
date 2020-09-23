@@ -33,6 +33,21 @@ type KalaStatsResponse struct {
 	Stats *job.KalaStats
 }
 
+// HandleHealthcheckRequest performs healthcheck
+// /api/v1/healthcheck
+func HandleHealthcheckRequest() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set(contentType, jsonContentType)
+		w.WriteHeader(http.StatusOK)
+		if err := json.NewEncoder(w).Encode(struct {
+			Status string `json:"status"`
+		}{Status: "OK"}); err != nil {
+			log.Errorf("Error occurred when marshaling response: %s", err)
+			return
+		}
+	}
+}
+
 // HandleKalaStatsRequest is the handler for getting system-level metrics
 // /api/v1/stats
 func HandleKalaStatsRequest(cache job.JobCache) func(w http.ResponseWriter, r *http.Request) {
@@ -332,6 +347,8 @@ func SetupApiRoutes(r *mux.Router, cache job.JobCache, defaultOwner string) {
 	r.HandleFunc(ApiJobPath+"disable/{id}/", HandleDisableJobRequest(cache)).Methods("POST")
 	// Route for getting app-level metrics
 	r.HandleFunc(ApiUrlPrefix+"stats/", HandleKalaStatsRequest(cache)).Methods("GET")
+	// Route for getting healthcheck
+	r.HandleFunc(ApiUrlPrefix+"healthcheck/", HandleHealthcheckRequest()).Methods("GET")
 }
 
 func MakeServer(listenAddr string, cache job.JobCache, defaultOwner string, profile bool) *http.Server {

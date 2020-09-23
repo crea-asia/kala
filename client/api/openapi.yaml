@@ -7,6 +7,20 @@ info:
 servers:
 - url: http://localhost:8000/
 paths:
+  /api/v1/healthcheck:
+    get:
+      operationId: healthcheck
+      responses:
+        "200":
+          content: {}
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_default'
+          description: An error
+      summary: Check the avaialbility of the service
   /api/v1/job/:
     post:
       operationId: createJob
@@ -27,19 +41,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_400'
+                $ref: '#/components/schemas/inline_response_default'
           description: An error
         "409":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_400'
+                $ref: '#/components/schemas/inline_response_default'
           description: An error
         default:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_400'
+                $ref: '#/components/schemas/inline_response_default'
           description: An error
       summary: Creates a job
       x-codegen-request-body-name: createJob
@@ -63,7 +77,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_400'
+                $ref: '#/components/schemas/inline_response_default'
           description: An error
       summary: Deletes a job
     get:
@@ -85,13 +99,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_400'
+                $ref: '#/components/schemas/inline_response_default'
           description: An error
         default:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/inline_response_400'
+                $ref: '#/components/schemas/inline_response_default'
           description: An error
       summary: Get job details
 components:
@@ -208,7 +222,7 @@ components:
         is_done:
           type: boolean
       type: object
-    inline_response_400:
+    inline_response_default:
       properties:
         error:
           type: string

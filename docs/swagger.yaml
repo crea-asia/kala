@@ -18,6 +18,16 @@ consumes:
   - application/json
 
 paths:
+  /api/v1/healthcheck:
+    get:
+      summary: Check the avaialbility of the service
+      operationId: healthcheck
+      responses:
+        200:
+          description: OK
+        default:
+          $ref: '#/responses/errorResponse'
+
   /api/v1/job/:
     post:
       summary: Creates a job
