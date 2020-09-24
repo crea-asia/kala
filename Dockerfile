@@ -11,5 +11,5 @@ WORKDIR /app
 COPY ./webui /app/webui
 COPY --from=0 /go/src/github.com/crea-asia/kala/kala /app/kala
 
-CMD ["/app/kala", "serve"]
+ENTRYPOINT ["/app/kala", "serve"]
 EXPOSE 8000
