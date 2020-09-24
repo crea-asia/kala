@@ -26,15 +26,24 @@ func New(dsn string) *DB {
 	var err error
 	for i := 0; i < 30; i++ {
 		dbConn, err = sql.Open("postgres", dsn)
-		if err == nil {
-			break
+		if err != nil {
+			log.Printf("unable to connect to DB, retrying...")
+			time.Sleep(1 * time.Second)
+			continue
 		}
-		log.Printf("unable to connect to DB, retrying...")
-		time.Sleep(1 * time.Second)
+		if  err := dbConn.Ping(); err != nil {
+			log.Printf("unable to connect to DB, retrying...")
+			time.Sleep(1 * time.Second)
+			continue
+		}
+
+		break
 	}
 	if err != nil {
 		log.Fatal("unable to connect to DB")
 	}
+
+
 	// passive attempt to create table
 	_, _ = dbConn.Exec(fmt.Sprintf(`create table %s (job jsonb);`, TableName))
 	return &DB{
