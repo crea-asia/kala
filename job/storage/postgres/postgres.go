@@ -4,12 +4,12 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"log"
+	"time"
 
 	_ "github.com/lib/pq"
 
 	"github.com/crea-asia/kala/job"
-
-	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -22,14 +22,22 @@ type DB struct {
 
 // New instantiates a new DB.
 func New(dsn string) *DB {
-	connection, err := sql.Open("postgres", dsn)
+	var dbConn *sql.DB
+	var err error
+	for i := 0; i < 30; i++ {
+		dbConn, err = sql.Open("postgres", dsn)
+		if err != nil {
+			log.Printf("unable to connect to DB, retrying...")
+			time.Sleep(1 * time.Second)
+		}
+	}
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("unable to connect to DB")
 	}
 	// passive attempt to create table
-	_, _ = connection.Exec(fmt.Sprintf(`create table %s (job jsonb);`, TableName))
+	_, _ = dbConn.Exec(fmt.Sprintf(`create table %s (job jsonb);`, TableName))
 	return &DB{
-		conn: connection,
+		conn: dbConn,
 	}
 }
 
