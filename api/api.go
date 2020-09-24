@@ -317,14 +317,11 @@ type apiError struct {
 }
 
 func errorEncodeJSON(errToEncode error, status int, w http.ResponseWriter) {
-	js, err := json.Marshal(apiError{Error: errToEncode.Error()})
-	if err != nil {
-		log.Errorf("could not encode error message: %v", err)
-		return
-	}
 	w.Header().Set(contentType, jsonContentType)
-	_, _ = w.Write(js)
 	w.WriteHeader(status)
+	if err := json.NewEncoder(w).Encode(apiError{Error: errToEncode.Error()}); err != nil {
+		log.Errorf("could not encode error message: %v", err)
+	}
 }
 
 // SetupApiRoutes is used within main to initialize all of the routes
