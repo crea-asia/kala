@@ -27,12 +27,12 @@ func New(dsn string) *DB {
 	for i := 0; i < 30; i++ {
 		dbConn, err = sql.Open("postgres", dsn)
 		if err != nil {
-			log.Printf("unable to connect to DB, retrying...")
+			log.Printf("unable to connect to DB, retrying... error=%v\n", err)
 			time.Sleep(1 * time.Second)
 			continue
 		}
 		if  err := dbConn.Ping(); err != nil {
-			log.Printf("unable to connect to DB, retrying...")
+			log.Printf("unable to connect to DB, retrying... error=%v\n", err)
 			time.Sleep(1 * time.Second)
 			continue
 		}
@@ -40,7 +40,7 @@ func New(dsn string) *DB {
 		break
 	}
 	if err != nil {
-		log.Fatal("unable to connect to DB")
+		log.Printf("unable to connect to DB, error=%v\n", err)
 	}
 
 
