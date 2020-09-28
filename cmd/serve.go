@@ -77,6 +77,10 @@ var serveCmd = &cobra.Command{
 			db = consul.New(viper.GetString("jobdb-address"))
 		case "postgres":
 			dsn := fmt.Sprintf("postgres://%s:%s@%s", viper.GetString("jobdb-username"), viper.GetString("jobdb-password"), viper.GetString("jobdb-address"))
+			// dsn overrides standard parameters
+			if viper.GetString("jobdb-dsn") != "" {
+				dsn = viper.GetString("jobdb-dsn")
+			}
 			db = postgres.New(dsn)
 		case "mysql", "mariadb":
 			dsn := fmt.Sprintf("%s:%s@%s", viper.GetString("jobdb-username"), viper.GetString("jobdb-password"), viper.GetString("jobdb-address"))
@@ -149,6 +153,7 @@ func init() {
 	serveCmd.Flags().StringP("default-owner", "o", "", "Default owner. The inputted email will be attached to any job missing an owner")
 	serveCmd.Flags().String("jobdb", "boltdb", "Implementation of job database, either 'boltdb', 'redis', 'mongo', 'consul', 'postgres', 'mariadb', or 'mysql'.")
 	serveCmd.Flags().String("bolt-path", "", "Path to the bolt database file, default is current directory.")
+	serveCmd.Flags().String("jobdb-dsn", "", "A DSN address for jobdb")
 	serveCmd.Flags().String("jobdb-address", "", "Network address for the job database, in 'host:port' format.")
 	serveCmd.Flags().String("jobdb-username", "", "Username for the job database.")
 	serveCmd.Flags().String("jobdb-password", "", "Password for the job database.")
@@ -161,4 +166,6 @@ func init() {
 	serveCmd.Flags().Int("jobstat-ttl", -1, "Sets the jobstat-ttl in minutes. The default -1 value indicates JobStat entries will be kept forever")
 	serveCmd.Flags().Bool("profile", false, "Activate pprof handlers")
 	serveCmd.Flags().Bool("no-tx-persist", false, "Only persist to db periodically, not transactionally.")
+
+	_ = viper.BindEnv("jobdb-dsn", "JOBDB_DSN")
 }
