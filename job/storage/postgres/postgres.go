@@ -85,7 +85,7 @@ func (d DB) Get(id string) (*job.Job, error) {
 
 // Delete deletes a persisted Job.
 func (d DB) Delete(id string) error {
-	query := fmt.Sprintf(`delete from %v where job -> 'id' = $1;`, TableName)
+	query := fmt.Sprintf(`delete from %v where job->>'id' = $1;`, TableName)
 	_, err := d.conn.Exec(query, id)
 	return err
 }
