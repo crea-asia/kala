@@ -1,7 +1,9 @@
 package integrate
 
 import (
+	"context"
 	"fmt"
+	"github.com/antihax/optional"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -28,7 +30,7 @@ func TestIntegrationTest(t *testing.T) {
 	kalaApi := api.MakeServer(addr, cache, "default@example.com", false)
 	go kalaApi.ListenAndServe()
 	runtime.Gosched()
-	kalaClient := client.New("http://" + addr)
+	kalaClient := kalaclient.NewAPIClient(&kalaclient.Configuration{BasePath: "http://" + addr})
 
 	hit := make(chan struct{})
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -40,17 +42,19 @@ func TestIntegrationTest(t *testing.T) {
 	parsedTime := scheduleTime.Format(time.RFC3339)
 	delay := "PT5M"
 	scheduleStr := fmt.Sprintf("R/%s/%s", parsedTime, delay)
-	body := &job.Job{
+	body := kalaclient.Job{
 		Name:     "Increment HitCount",
 		Schedule: scheduleStr,
-		JobType:  job.RemoteJob,
-		RemoteProperties: job.RemoteProperties{
+		Type:     int64(job.RemoteJob),
+		RemoteProperties: kalaclient.RemoteProperties{
 			Url:                   "http://" + srv.Listener.Addr().String(),
 			Method:                http.MethodGet,
-			ExpectedResponseCodes: []int{200},
+			ExpectedResponseCodes: []int64{200},
 		},
 	}
-	_, err := kalaClient.CreateJob(body)
+	_, _, err := kalaClient.DefaultApi.CreateJob(context.Background(), &kalaclient.CreateJobOpts{
+		CreateJob: optional.NewInterface(body),
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
