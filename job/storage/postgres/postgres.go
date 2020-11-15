@@ -92,7 +92,8 @@ func (d DB) Delete(id string) error {
 
 // Save persists a Job.
 func (d DB) Save(j *job.Job) error {
-	template := `insert into %[1]s (id, job) values($1, $2);`
+	template := `insert into %[1]s (id, job) values($1, $2) ON CONFLICT ON CONSTRAINT jobs_id_key
+		DO UPDATE SET job = $2`
 	query := fmt.Sprintf(template, TableName)
 	r, err := json.Marshal(j)
 	if err != nil {

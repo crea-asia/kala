@@ -36,7 +36,7 @@ func TestSaveAndGetJob(t *testing.T) {
 		m.ExpectBegin()
 		m.ExpectPrepare("insert .*").
 			ExpectExec().
-			WithArgs(string(j)).
+			WithArgs(genericMockJob.Id, string(j)).
 			WillReturnResult(sqlmock.NewResult(1, 1))
 		m.ExpectCommit()
 		err := db.Save(genericMockJob)
@@ -72,7 +72,7 @@ func TestDeleteJob(t *testing.T) {
 		m.ExpectBegin()
 		m.ExpectPrepare("insert .*").
 			ExpectExec().
-			WithArgs(string(j)).
+			WithArgs(genericMockJob.Id, string(j)).
 			WillReturnResult(sqlmock.NewResult(1, 1))
 		m.ExpectCommit()
 
@@ -120,5 +120,4 @@ func TestSaveAndGetAllJobs(t *testing.T) {
 			assert.Equal(t, 2, len(jobs))
 		}
 	}
-
 }
