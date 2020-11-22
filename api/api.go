@@ -188,7 +188,7 @@ func HandleJobRequest(cache job.JobCache) func(w http.ResponseWriter, r *http.Re
 
 		j, err := cache.Get(id)
 		if err != nil {
-			log.Errorf("Error occurred when trying to get the job you requested.")
+			log.Errorf("unable to get requested job, error = %v", err)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
