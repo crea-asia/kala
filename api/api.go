@@ -246,7 +246,7 @@ func HandleStartJobRequest(cache job.JobCache) func(w http.ResponseWriter, r *ht
 		id := mux.Vars(r)["id"]
 		j, err := cache.Get(id)
 		if err != nil {
-			log.Errorf("Error occurred when trying to get the job you requested.")
+			log.Errorf("Error occurred when trying to get the job you requested: %s", err)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
@@ -269,7 +269,7 @@ func HandleDisableJobRequest(cache job.JobCache) func(w http.ResponseWriter, r *
 		id := mux.Vars(r)["id"]
 		j, err := cache.Get(id)
 		if err != nil {
-			log.Errorf("Error occurred when trying to get the job you requested.")
+			log.Errorf("Error occurred when trying to get the job you requested: %s", err)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
@@ -294,7 +294,7 @@ func HandleEnableJobRequest(cache job.JobCache) func(w http.ResponseWriter, r *h
 		id := mux.Vars(r)["id"]
 		j, err := cache.Get(id)
 		if err != nil {
-			log.Errorf("Error occurred when trying to get the job you requested.")
+			log.Errorf("Error occurred when trying to get the job you requested: %s", err)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
