@@ -138,6 +138,9 @@ func (d *Duration) Add(t time.Time) time.Time {
 }
 
 func (d *Duration) IsZero() bool {
+	if d == nil {
+		return true
+	}
 	switch {
 	case d.Years != 0:
 	case d.Months != 0:

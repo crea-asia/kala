@@ -233,12 +233,7 @@ func (c *LockFreeJobCache) Start(persistWaitTime time.Duration, jobstatTtl time.
 			log.Infof("Job %s:%s skipped.", j.Name, j.Id)
 			continue
 		}
-		if j.ShouldStartWaiting() {
-			j.StartWaiting(c, false)
-		}
-		log.Infof("Job %s:%s added to cache.", j.Name, j.Id)
-		err := c.Set(j)
-		if err != nil {
+		if err := j.Init(c); err != nil {
 			log.Errorln(err)
 		}
 	}
