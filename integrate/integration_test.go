@@ -3,7 +3,6 @@ package integrate
 import (
 	"context"
 	"fmt"
-	"github.com/antihax/optional"
 	"net"
 	"net/http"
 	"net/http/httptest"
@@ -11,10 +10,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/antihax/optional"
 	"github.com/crea-asia/kala/api"
-	"github.com/crea-asia/kala/client"
+	kalaclient "github.com/crea-asia/kala/client"
+	"github.com/crea-asia/kala/clock"
 	"github.com/crea-asia/kala/job"
-	"github.com/mixer/clock"
 )
 
 func TestIntegrationTest(t *testing.T) {

@@ -12,9 +12,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/crea-asia/kala/utils/iso8601"
-	"github.com/mixer/clock"
+	"github.com/crea-asia/kala/clock"
 
+	"github.com/crea-asia/kala/utils/iso8601"
 	uuid "github.com/nu7hatch/gouuid"
 	log "github.com/sirupsen/logrus"
 )
@@ -470,7 +470,6 @@ func (j *Job) DeleteFromDependentJobs(cache JobCache) error {
 		)
 
 		childJob.lock.Unlock()
-
 	}
 
 	return nil

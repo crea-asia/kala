@@ -88,7 +88,9 @@ func (c *MemoryJobCache) Start(persistWaitTime time.Duration) {
 		log.Infof("Shutting down....")
 
 		// Persist all jobs to database
-		log.Errorln(c.Persist())
+		if err := c.Persist(); err != nil {
+			log.Errorf("unable to persist jobs, err=%v", err)
+		}
 
 		// Close the database
 		c.jobDB.Close()
@@ -154,13 +156,17 @@ func (c *MemoryJobCache) Delete(id string) error {
 	j.lock.Lock()
 
 	go func() {
-		log.Errorln(j.DeleteFromParentJobs(c)) // todo: review
+		if err := j.DeleteFromParentJobs(c); err != nil {
+			log.Errorf("unable to delete from parent job, error=%v", err)
+		}
 	}()
 
 	// Remove itself from dependent jobs as a parent job
 	// and possibly delete child jobs if they don't have any other parents.
 	go func() {
-		log.Errorln(j.DeleteFromDependentJobs(c)) // todo: review
+		if err := j.DeleteFromDependentJobs(c); err != nil {
+			log.Errorf("unable to delete from dependency job, error=%v", err)
+		}
 	}()
 
 	delete(c.jobs.Jobs, id)
@@ -233,9 +239,17 @@ func (c *LockFreeJobCache) Start(persistWaitTime time.Duration, jobstatTtl time.
 			log.Infof("Job %s:%s skipped.", j.Name, j.Id)
 			continue
 		}
-		if err := j.Init(c); err != nil {
+
+		if err := j.InitDelayDuration(true); err != nil {
+			log.Warnf("unable to init delayed duration, error=%v", err)
+		}
+		if j.ShouldStartWaiting() {
+			j.StartWaiting(c, false)
+		}
+		if err := c.Set(j); err != nil {
 			log.Errorln(err)
 		}
+		log.Infof("Job %s:%s added to cache.", j.Name, j.Id)
 	}
 	// Occasionally, save items in cache to db.
 	if persistWaitTime > 0 {
@@ -257,7 +271,9 @@ func (c *LockFreeJobCache) Start(persistWaitTime time.Duration, jobstatTtl time.
 		log.Infof("Shutting down....")
 
 		// Persist all jobs to database
-		log.Errorln(c.Persist())
+		if err := c.Persist(); err != nil {
+			log.Errorf("unable to persist job, error=%v", err)
+		}
 
 		// Close the database
 		c.jobDB.Close()
@@ -306,6 +322,7 @@ func (c *LockFreeJobCache) Delete(id string) error {
 	if err != nil {
 		return ErrJobDoesntExist
 	}
+
 	j.lock.Lock()
 	defer j.lock.Unlock()
 
@@ -321,17 +338,21 @@ func (c *LockFreeJobCache) Delete(id string) error {
 	j.StopTimer()
 	j.lock.Lock()
 
-	go func() {
-		log.Errorln(j.DeleteFromParentJobs(c)) // todo: review
-	}()
-	// Remove itself from dependent jobs as a parent job
-	// and possibly delete child jobs if they don't have any other parents.
-	go func() {
-		log.Errorln(j.DeleteFromDependentJobs(c)) // todo: review
-	}()
 	log.Infof("Deleting %s", id)
 	c.jobs.Del(id)
-	return err
+
+	go func() {
+		if err := j.DeleteFromParentJobs(c); err != nil {
+			log.Errorf("unable to delete from parent job, error=%v", err)
+		}
+		// Remove itself from dependent jobs as a parent job
+		// and possibly delete child jobs if they don't have any other parents.
+		if err := j.DeleteFromDependentJobs(c); err != nil {
+			log.Errorf("unable to delete from dependency job, error=%v", err)
+		}
+	}()
+
+	return nil
 }
 
 func (c *LockFreeJobCache) Enable(j *Job) error {

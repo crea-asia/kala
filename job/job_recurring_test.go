@@ -3,10 +3,10 @@ package job
 
 import (
 	"fmt"
+	"github.com/crea-asia/kala/clock"
 	"testing"
 	"time"
 
-	"github.com/mixer/clock"
 	"github.com/stretchr/testify/assert"
 )
 

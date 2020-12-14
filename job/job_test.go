@@ -2,13 +2,13 @@ package job
 
 import (
 	"fmt"
+	"github.com/crea-asia/kala/clock"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/mixer/clock"
 	"github.com/stretchr/testify/assert"
 )
 

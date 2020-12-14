@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mixer/clock"
+	"github.com/crea-asia/kala/clock"
 )
 
 // Special hybrid clock that allows you to make time "play" in addition to moving it around manually.

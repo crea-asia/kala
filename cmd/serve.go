@@ -11,17 +11,13 @@ import (
 	"github.com/crea-asia/kala/api"
 	"github.com/crea-asia/kala/job"
 	"github.com/crea-asia/kala/job/storage/boltdb"
-	"github.com/crea-asia/kala/job/storage/consul"
-	"github.com/crea-asia/kala/job/storage/mongo"
 	"github.com/crea-asia/kala/job/storage/mysql"
 	"github.com/crea-asia/kala/job/storage/postgres"
 	"github.com/crea-asia/kala/job/storage/redis"
-
 	redislib "github.com/garyburd/redigo/redis"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gopkg.in/mgo.v2"
 )
 
 var serveCmd = &cobra.Command{
@@ -64,17 +60,6 @@ var serveCmd = &cobra.Command{
 			} else {
 				db = redis.New(viper.GetString("jobdb-address"), redislib.DialOption{}, false)
 			}
-		case "mongo":
-			if viper.GetString("jobdb-username") != "" {
-				cred := &mgo.Credential{
-					Username: viper.GetString("jobdb-username"),
-					Password: viper.GetString("jobdb-password")}
-				db = mongo.New(viper.GetString("jobdb-address"), cred)
-			} else {
-				db = mongo.New(viper.GetString("jobdb-address"), &mgo.Credential{})
-			}
-		case "consul":
-			db = consul.New(viper.GetString("jobdb-address"))
 		case "postgres":
 			dsn := fmt.Sprintf("postgres://%s:%s@%s", viper.GetString("jobdb-username"), viper.GetString("jobdb-password"), viper.GetString("jobdb-address"))
 			// dsn overrides standard parameters

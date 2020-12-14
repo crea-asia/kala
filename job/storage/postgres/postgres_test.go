@@ -8,9 +8,7 @@ import (
 	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
-
 	"github.com/crea-asia/kala/job"
-
 	"github.com/stretchr/testify/assert"
 )
 

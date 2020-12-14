@@ -6,7 +6,7 @@ import (
 	// This library abstracts the time functionality of the OS so that it can be controlled during unit tests.
 	// It was selected over thejerf/abtime because abtime is geared towards precision timing rather than scheduling.
 	// Other libraries were reviewed and rejected due to outstanding bugs.
-	"github.com/mixer/clock"
+	"github.com/crea-asia/kala/clock"
 )
 
 type Clock struct {
